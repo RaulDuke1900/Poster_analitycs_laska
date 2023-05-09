@@ -1,0 +1,9 @@
+venv/
+token
+.env
+demo.py
+.vscode/
+file.pkl
+manual.txt
+*.xlsx
+__pycache__/
