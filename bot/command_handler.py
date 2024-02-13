@@ -12,7 +12,8 @@ def start_message(message: telebot.types.Message):
     deep_link = message.text[7:]
     answer = f'Привет {message.chat.first_name}, ты написал /start,'
 
-    message_to_admin = f'Привет, tg пользователь {message.chat.username}, имя {message.chat.first_name} написал /start,\n'\
+    message_to_admin = f'Привет, tg пользователь {message.chat.username}, '\
+                       f'имя {message.chat.first_name} написал /start,\n'\
                        f'Его телеграм id {message.chat.id}\n'\
                        f'Его deep_link is {deep_link}'
     bot.send_message(message.chat.id, answer)
