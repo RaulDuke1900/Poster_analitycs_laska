@@ -2,13 +2,24 @@ from user.user import User
 from api.models import AnalyticsBySpotModel, EmployeeStatisticModel, CashShiftsModel, CashShiftsTransactionsModel
 import telebot
 from utils import weekday_utils
-
+from environs import Env
 
 CASH_SHIFT_EXPENSE_ID = 3
 CASH_SHIFT_NOT_DELETED = 0
 
-token_bot = '6089649610:AAHI6ROYWErETy9pOqeKj-mw5qJvWT0Qfpo'
+env: Env = Env()
+env.read_env()
+token_bot = env('BOT_TOKEN_OLD')
 bot = telebot.TeleBot(token=token_bot)
+
+
+def creat_message_sales_by_main_categories(user: User, spot_id: str,
+                                           date_from: str, date_to: str) -> str:
+    sales_by_main_categories: dict = user.get_sales_by_main_category(spot_id, date_from, date_to)
+    message_sales_by_main_categories: str = ''
+    for category, revenue in sales_by_main_categories.items():
+        message_sales_by_main_categories += f'{category} - {float(revenue):_.2f}\n'
+    return message_sales_by_main_categories
 
 
 def creat_messages_analitics_by_spot(user: User, date_from: str,
@@ -28,6 +39,8 @@ def creat_messages_analitics_by_spot(user: User, date_from: str,
                   f'Кол-во чеков - {analitics.counters.transactions:_.0f}\n'\
                   f'Посетителей - {analitics.counters.visitors:_.0f}\n'\
                   f'Cредний чек - {analitics.counters.average_receipt:_.2f}\n\n'\
+                  f'<b><i>Выручка по категориям</i></b>:\n'\
+                  f'{creat_message_sales_by_main_categories(user, spot_id, date_from, date_to)}\n'\
                   f'<b><i>Средняя выручка по дням недели:</i></b>\n'\
                   f'Понедельник - '\
                   f'{round(weekday_revenue[1] / count_weekdays["Monday"], 2):_.2f}\n'\
@@ -55,6 +68,7 @@ def creat_messages_analitics_by_spot(user: User, date_from: str,
                   f'C 20.00 до 21.00 - {sum(hourly_revenue[20:21]):_.2f}\n\n'
         message = message.replace('_', ' ')
         bot.send_message(chat_id=user.tg_id, text=message, parse_mode="html")
+        # bot.send_message(chat_id='502490414', text=message, parse_mode="html")
     return message
 
 
@@ -88,12 +102,8 @@ def creat_message_cash_shift(user: User, date_from, date_to):
     all_messages: list[str] = []
     for cash_shift in cash_shifts:
         amount_sell = cash_shift.amount_sell_cash + cash_shift.amount_sell_card
-
-        sales_by_main_categories: dict = user.get_sales_by_main_category(cash_shift.spot_id, date_from, date_to)
-        message_sales_by_main_categories: str = ''
-        for category, revenue in sales_by_main_categories.items():
-            message_sales_by_main_categories += f'{category} - {float(revenue):_.2f}\n'
-
+        message_sales_by_main_categories: str = creat_message_sales_by_main_categories(user, cash_shift.spot_id,
+                                                                                       date_from, date_to)
         message_cash_shift_expenses: str = ''
         cash_shift_expenses: list[CashShiftsTransactionsModel] = user.get_cash_shift_transactions(user.params,
                                                                                                   cash_shift.id)
@@ -126,19 +136,14 @@ def creat_message_cash_shift(user: User, date_from, date_to):
 
     for message in all_messages:
         bot.send_message(chat_id=user.tg_id, text=message, parse_mode="html")
-
     return all_messages
 
 
-def creat_message_analitics():
-    pass
-
-
 if __name__ == '__main__':
-    date_from = '2023-01-01'
-    date_to = '2023-01-31'
+    date_from = '2024-02-01'
+    date_to = '2024-02-12'
     laska: User = User.load_from_file('laska.pkl')
-    creat_messages_analitics_by_employeers(laska, date_from, date_to)
+    # creat_messages_analitics_by_employeers(laska, date_from, date_to)
     creat_messages_analitics_by_spot(laska, date_from, date_to)
-    creat_message_cash_shift(laska, '2024-01-31', '2024-01-31')
+    # creat_message_cash_shift(laska, '2024-02-11', '2024-02-11')
     print(laska.tg_id)
