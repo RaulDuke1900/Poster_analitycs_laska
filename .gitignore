@@ -1,9 +1,13 @@
 venv/
 token
 .env
-demo.py
 .vscode/
 file.pkl
-manual.txt
 *.xlsx
 __pycache__/
+try/
+demo.py
+app.log
+try.pkl
+manual.txt
+laska.pkl
