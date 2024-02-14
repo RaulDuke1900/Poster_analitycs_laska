@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple
 from urllib.parse import urljoin
 from decimal import Decimal
-from api.models import AnalyticsBySpotModel, CashShiftsModel, CashShiftsTransactionsModel
-from constants import DECIMALS_IN_CURRENCY, ID_MAIN_LEVEL_IN_MAIN_MENU, NOT_FOUND_EMPLOYEE
+from datetime import datetime
+
+from poster.models import AnalyticsBySpotModel, CashShiftsModel, CashShiftsTransactionsModel
+from constants import DECIMALS_IN_CURRENCY, ID_MAIN_LEVEL_IN_MAIN_MENU, NOT_FOUND_EMPLOYEE, MAIN_MENU
 
 logging.basicConfig(filename='app.log', level=logging.ERROR)
 
@@ -23,6 +25,7 @@ class Url:
     get_cash_shifts: str = urljoin(base_url, 'finance.getCashShifts')
     get_cash_shift_transaction: str = urljoin(base_url,
                                               'finance.getCashShiftTransactions')
+    application_get_info: str = urljoin(base_url, 'application.getInfo')
 
 
 class ApiRequest:
@@ -34,9 +37,12 @@ class ApiRequest:
         if 'response' in json_response:
             return json_response['response']
         else:
-            logging.error(f"Poster status code: {response.status_code}\n\
-                            Poster text: {response.text}\n\
-                            {params}")
+            message: str = f'\n{datetime.now()}\n'\
+                           f'Poster status code: {response.status_code}\n'\
+                           f'Poster text: {response.text}\n'\
+                           f'call with params {params}\n'
+            print(message)
+            logging.error(message)
 
         return {}
 
