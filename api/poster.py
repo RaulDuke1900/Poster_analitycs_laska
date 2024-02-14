@@ -5,15 +5,7 @@ from typing import Dict, List, Tuple
 from urllib.parse import urljoin
 from decimal import Decimal
 from api.models import AnalyticsBySpotModel, CashShiftsModel, CashShiftsTransactionsModel
-
-
-# Основное меню приложения
-MAIN_MENU = {0: 'Головний екран'}
-
-# Идентификатор основного уровня меню
-ID_MAIN_LEVEL_IN_MAIN_MENU = '1'
-DECIMALS_IN_CURRENCY = 100
-NOT_FOUND_EMPLOYEE = -1
+from constants import DECIMALS_IN_CURRENCY, ID_MAIN_LEVEL_IN_MAIN_MENU, NOT_FOUND_EMPLOYEE
 
 logging.basicConfig(filename='app.log', level=logging.ERROR)
 

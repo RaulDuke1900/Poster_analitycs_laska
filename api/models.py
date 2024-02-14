@@ -1,9 +1,5 @@
 from pydantic import BaseModel, Field, validator
-
-
-DECIMALS_IN_CURRENCY = 100
-SECONDS_IN_HOURS = 3600
-SECONDS_IN_MINUTES = 60
+from constants import DECIMALS_IN_CURRENCY, SECONDS_IN_HOURS, SECONDS_IN_MINUTES
 
 
 class Counters(BaseModel):

@@ -3,9 +3,7 @@ from api.models import AnalyticsBySpotModel, EmployeeStatisticModel, CashShiftsM
 import telebot
 from utils import weekday_utils
 from environs import Env
-
-CASH_SHIFT_EXPENSE_ID = 3
-CASH_SHIFT_NOT_DELETED = 0
+from constants import CASH_SHIFT_EXPENSE_ID, CASH_SHIFT_NOT_DELETED
 
 env: Env = Env()
 env.read_env()
