@@ -126,6 +126,10 @@ class CashShiftsTransactionsModel(BaseModel):
         return round(int(value) / DECIMALS_IN_CURRENCY, 2)
 
 
+class ApplicationInfoModel(BaseModel):
+    pass
+
+
 if __name__ == '__main__':
     from user.user import User
     laska: User = User.load_from_file('laska.pkl')
