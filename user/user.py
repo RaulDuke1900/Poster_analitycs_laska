@@ -1,8 +1,8 @@
 import pickle
 
-from api.poster import Url, ApiRequest, SalesManager
-from api.poster import CategoryManager, EmployeesManager, AnaliticsManager, CashShiftsManager
-from api.models import CashShiftsModel, CashShiftsTransactionsModel
+from poster.api import Url, ApiRequest, SalesManager
+from poster.api import CategoryManager, EmployeesManager, AnaliticsManager, CashShiftsManager
+from poster.models import CashShiftsModel, CashShiftsTransactionsModel
 from typing import Dict, List
 
 # from pprint import pprint
@@ -19,7 +19,7 @@ class User:
         self.main_categories: dict[str, str] = (
             self.get_main_categories()
         )
-        self.category_mapping: dict[str, tuple(str, str)] = (
+        self.category_mapping: dict[str, tuple[str, str]] = (
             self.built_category_mapping()
             )
 
@@ -88,6 +88,9 @@ class User:
 
     def get_cash_shift_transactions(self, params: dict, shift_id: int) -> list[CashShiftsTransactionsModel]:
         return CashShiftsManager.get_cash_shift_transactions(params, shift_id)
+
+    def get_application_info(self, params: dict) -> dict:
+        return ApiRequest.get(Url.application_get_info, params)
 
 
 if __name__ == '__main__':
