@@ -33,7 +33,6 @@ class ApiRequest:
     def get(url: str, params: Dict) -> requests.models.Response:
         response = requests.get(url=url, params=params)
         json_response = response.json()
-        # pprint(json_response['response'])
         if 'response' in json_response:
             return json_response['response']
         else:
@@ -81,7 +80,6 @@ class CategoryManager:
         main_categories: Dict = {}
         main_categories.update(MAIN_MENU)
         response: List[Dict] = ApiRequest.get(Url.get_categories, params)
-        # pprint(response)
         for category in response:
             if category['level'] == ID_MAIN_LEVEL_IN_MAIN_MENU:
                 main_categories.update({category['category_id']:

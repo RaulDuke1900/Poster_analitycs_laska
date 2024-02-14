@@ -25,4 +25,3 @@ def count_weekdays(date_from, date_to):
 if __name__ == '__main__':
     # Примеры использования функции
     result_custom = count_weekdays('2024-01-01', '2024-01-31')
-    print(result_custom)
