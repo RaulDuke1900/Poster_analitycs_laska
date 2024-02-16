@@ -1,5 +1,5 @@
 from user.user import User
-from api.models import AnalyticsBySpotModel, EmployeeStatisticModel, CashShiftsModel, CashShiftsTransactionsModel
+from poster.models import AnalyticsBySpotModel, EmployeeStatisticModel, CashShiftsModel, CashShiftsTransactionsModel
 import telebot
 from utils import weekday_utils
 from environs import Env
@@ -30,7 +30,6 @@ def creat_messages_analitics_by_spot(user: User, date_from: str,
         weekday_revenue = analitics.weekday_revenue
         hourly_revenue = analitics.hourly_revenue
         count_weekdays: dict = weekday_utils.count_weekdays(date_from, date_to)
-        print(count_weekdays)
         message = f'<b>***{user.spots[spot_id]}***</b>\n'\
                   f'<b><i>з {date_from} по {date_to}</i></b>\n\n'\
                   f'Выручка - {analitics.counters.revenue:_.2f}\n'\
