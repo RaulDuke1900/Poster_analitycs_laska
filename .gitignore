@@ -5,9 +5,10 @@ token
 file.pkl
 *.xlsx
 __pycache__/
-try/
+try.py
 demo.py
 app.log
 try.pkl
 manual.txt
 laska.pkl
+poster_analitycs_env/
