@@ -18,7 +18,7 @@ def registration():
     data = dict(application_id=(None, POSTER_ANALITYCS_APP_ID), application_secret=(None, POSTER_ANALITYCS_APP_TOKEN),
                 grant_type=(None, 'authorization_code'), redirect_uri=(None, URL_FOR_OAUTH), code=(None, secret_code))
     response = requests.post(url=url, files=data)
-    with open('project_root/test_reg.json', 'a') as file:
+    with open(f'{project_root}/test_reg.json', 'a') as file:
         file.write(response.text)
         file.write('\n')
     return redirect(f'https://t.me/Poster_analitycs_bot?start={deep_link}')
