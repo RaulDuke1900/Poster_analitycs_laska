@@ -28,7 +28,7 @@ class Url:
     application_get_info: str = urljoin(base_url, 'application.getInfo')
 
 
-class ApiRequest:
+class PosterRequest:
     @staticmethod
     def get(url: str, params: Dict) -> requests.models.Response:
         response = requests.get(url=url, params=params)
@@ -49,7 +49,7 @@ class ApiRequest:
 class EmployeesManager:
     @staticmethod
     def get_employees(params) -> dict[int: str]:
-        response: list[dict] = ApiRequest.get(Url.get_employees, params)
+        response: list[dict] = PosterRequest.get(Url.get_employees, params)
         employees: dict = {employee['user_id']: employee['name'] for employee in response}
         employees.update({NOT_FOUND_EMPLOYEE: 'Сотрудник не найден'})
         return employees
@@ -64,7 +64,7 @@ class CategoryManager:
             return category_id, MAIN_MENU[f'{category_id}']
         params = params.copy()
         params.update({'category_id': category_id})
-        response: Dict = ApiRequest.get(Url.menu_get_category, params)
+        response: Dict = PosterRequest.get(Url.menu_get_category, params)
         category_id: str = str(response.get('category_id'))
         category_name: str = response.get('category_name')
         parent_category: str = response.get('parent_category')
@@ -79,7 +79,7 @@ class CategoryManager:
     def get_main_categories(params: Dict) -> Dict:
         main_categories: Dict = {}
         main_categories.update(MAIN_MENU)
-        response: List[Dict] = ApiRequest.get(Url.get_categories, params)
+        response: List[Dict] = PosterRequest.get(Url.get_categories, params)
         for category in response:
             if category['level'] == ID_MAIN_LEVEL_IN_MAIN_MENU:
                 main_categories.update({category['category_id']:
@@ -91,7 +91,7 @@ class CategoryManager:
                                main_categories: dict) -> Dict[str, str]:
         category_mapping = {}
         params: Dict = params.copy()
-        response = ApiRequest.get(Url.get_categories, params)
+        response = PosterRequest.get(Url.get_categories, params)
         for category in response:
             category_id: str = category['category_id']
             category_name: str = category['category_name']
@@ -114,7 +114,7 @@ class CategoryManager:
 class SalesManager:
     @staticmethod
     def get_categories_sales(params: dict) -> list[dict]:
-        return ApiRequest.get(url=Url.get_categories_sales,
+        return PosterRequest.get(url=Url.get_categories_sales,
                               params=params)
 
     @staticmethod
@@ -139,7 +139,7 @@ class AnaliticsManager:
     def get_analytics_by_spot(params: dict) -> List[Dict]:
         params: dict = params.copy()
         params.update({'type': 'spots'})
-        response: ApiRequest = ApiRequest.get(url=Url.get_analytics,
+        response: PosterRequest = PosterRequest.get(url=Url.get_analytics,
                                               params=params)
         analytics_by_spot = AnalyticsBySpotModel.parse_obj(response)
         return analytics_by_spot
@@ -150,7 +150,7 @@ class AnaliticsManager:
         params: dict = params.copy()
         params.update({'type': 'waiters', 'dateFrom': date_from,
                        'dateTo': date_to})
-        response: list[dict] = ApiRequest.get(Url.get_analytics, params)
+        response: list[dict] = PosterRequest.get(Url.get_analytics, params)
         return response
 
 
@@ -160,7 +160,7 @@ class CashShiftsManager():
         params: dict = params.copy()
         params.update({'dateFrom': date_from, 'dateTo': date_to,
                        'timezone': 'client'})
-        response: list[dict] = ApiRequest.get(Url.get_cash_shifts, params)
+        response: list[dict] = PosterRequest.get(Url.get_cash_shifts, params)
         cash_shifts: list[CashShiftsModel] = []
         for cash_shift in response:
             cash_shifts.append(CashShiftsModel.parse_obj(cash_shift))
@@ -170,7 +170,7 @@ class CashShiftsManager():
     def get_cash_shift_transactions(params: dict, shift_id: int) -> list[CashShiftsTransactionsModel]:
         params: dict = params.copy()
         params.update({'shift_id': shift_id})
-        response: list[dict] = ApiRequest.get(Url.get_cash_shift_transaction, params)
+        response: list[dict] = PosterRequest.get(Url.get_cash_shift_transaction, params)
         cash_shift_transactions: list[CashShiftsTransactionsModel] = []
         for transaction in response:
             cash_shift_transactions.append(CashShiftsTransactionsModel.parse_obj(transaction))

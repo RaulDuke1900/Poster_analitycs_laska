@@ -1,6 +1,6 @@
 import pickle
 
-from poster.api import Url, ApiRequest, SalesManager
+from poster.api import Url, PosterRequest, SalesManager
 from poster.api import CategoryManager, EmployeesManager, AnaliticsManager, CashShiftsManager
 from poster.models import CashShiftsModel, CashShiftsTransactionsModel
 from typing import Dict, List
@@ -24,10 +24,10 @@ class User:
             )
 
     def get_settings(self) -> Dict:
-        return ApiRequest.get(url=Url.get_all_settings, params=self.params)
+        return PosterRequest.get(url=Url.get_all_settings, params=self.params)
 
     def get_spots(self) -> Dict:
-        response = ApiRequest.get(url=Url.spots, params=self.params)
+        response = PosterRequest.get(url=Url.spots, params=self.params)
         return {spot['spot_id']: spot['spot_adress'] for spot in response}
 
     def get_main_categories(self) -> Dict:
@@ -90,15 +90,15 @@ class User:
         return CashShiftsManager.get_cash_shift_transactions(params, shift_id)
 
     def get_application_info(self, params: dict) -> dict:
-        return ApiRequest.get(Url.application_get_info, params)
+        return PosterRequest.get(Url.application_get_info, params)
 
 
 if __name__ == '__main__':
-    # from environs import Env
-    # env = Env()
-    # env.read_env()
-    # laska = User(token=env('POSTER_TOKEN'), account_number='laska')
-    # laska.save_object_to_file(f'{laska.account_number}.pkl')
+    from environs import Env
+    env = Env()
+    env.read_env()
+    laska = User(token=env('POSTER_TOKEN'), account_number='laska')
+    laska.save_object_to_file(f'{laska.account_number}.pkl')
     laska: User = User.load_from_file('laska.pkl')
-    print(laska.tg_id)
+    print(laska.tg_id, laska.account_number)
     # pprint(laska.get_cash_shift_transactions(laska.params, 2993))
