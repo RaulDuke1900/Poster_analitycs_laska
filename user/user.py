@@ -1,11 +1,28 @@
 import pickle
+from typing import Dict, List
+from pydantic import BaseModel, validator
 
 from poster.api import Url, PosterRequest, SalesManager
 from poster.api import CategoryManager, EmployeesManager, AnaliticsManager, CashShiftsManager
 from poster.models import CashShiftsModel, CashShiftsTransactionsModel
-from typing import Dict, List
+from bot.static_message import hourly_period_revenue_exeption
 
-# from pprint import pprint
+class HourlyRevenuePeriod(BaseModel):
+    start_first: int = 0
+    end_first: int = 8
+    start_second: int = 8
+    end_second: int = 12
+    start_third: int = 12
+    end_third: int = 16
+    start_fourth: int = 16
+    end_fourth: int = 24
+
+    @validator("start_first", "end_first", "start_second", "end_second", 
+               "start_third", "end_third", "start_fourth", "end_fourth")
+    def check_range(cls, value):
+        if value < 0 or value > 24:
+            raise ValueError(f"Переделать на отправку сообщения {hourly_period_revenue_exeption}")
+        return value
 
 
 class User:
@@ -22,6 +39,7 @@ class User:
         self.category_mapping: dict[str, tuple[str, str]] = (
             self.built_category_mapping()
             )
+        self.hourly_revenue_period: BaseModel = HourlyRevenuePeriod()
 
     def get_settings(self) -> Dict:
         return PosterRequest.get(url=Url.get_all_settings, params=self.params)
