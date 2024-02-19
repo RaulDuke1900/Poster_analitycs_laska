@@ -6,3 +6,7 @@ CASH_SHIFT_NOT_DELETED = 0
 SECONDS_IN_HOURS = 3600
 SECONDS_IN_MINUTES = 60
 MAIN_MENU = {0: 'Головний екран'}  # Основное меню в Postere
+
+URL_FOR_OAUTH = 'http://gezha.space/poster_reg/'
+POSTER_ANALITYCS_APP_ID = '3310'
+POSTER_ANALITYCS_APP_TOKEN = '7a8e36e8e187d1afe477112c880902c4'
