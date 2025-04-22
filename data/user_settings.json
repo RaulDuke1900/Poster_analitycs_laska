@@ -1,0 +1,21 @@
+{
+    "daily_shift_report": {
+      "time": "20:10"
+    },
+    "weekly_sales_report": {
+      "time": "20:35"
+    },
+    "visit_report": {
+      "time": "20:35"
+    },
+    "weekly_staff_report": {
+      "time": "20:40"
+    },
+    "monthly_reports": {
+      "times": {
+        "mid_month": "20:35",
+        "end_month": "20:35"
+      }
+    }
+  }
+  

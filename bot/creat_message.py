@@ -4,10 +4,11 @@ import telebot
 from utils import weekday_utils
 from environs import Env
 from constants import CASH_SHIFT_EXPENSE_ID, CASH_SHIFT_NOT_DELETED
+from config.config import load_config
 
 env: Env = Env()
 env.read_env()
-token_bot = env('BOT_TOKEN_OLD')
+token_bot = env('BOT_TOKEN')
 bot = telebot.TeleBot(token=token_bot)
 
 
@@ -139,8 +140,9 @@ def creat_message_cash_shift(user: User, date_from, date_to):
 if __name__ == '__main__':
     date_from = '2024-02-01'
     date_to = '2024-02-12'
-    laska: User = User.load_from_file('laska.pkl')
+    cfg = load_config()
+    user = User(token=cfg.poster_token, account_number=cfg.poster_account)
     # creat_messages_analitics_by_employeers(laska, date_from, date_to)
-    creat_messages_analitics_by_spot(laska, date_from, date_to)
+    creat_messages_analitics_by_spot(user, date_from, date_to)
     # creat_message_cash_shift(laska, '2024-02-11', '2024-02-11')
-    print(laska.tg_id)
+  

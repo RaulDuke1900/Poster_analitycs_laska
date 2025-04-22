@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, validator
 from constants import DECIMALS_IN_CURRENCY, SECONDS_IN_HOURS, SECONDS_IN_MINUTES
+from config.config import load_config
 
 
 class Counters(BaseModel):
@@ -132,4 +133,5 @@ class ApplicationInfoModel(BaseModel):
 
 if __name__ == '__main__':
     from user.user import User
-    laska: User = User.load_from_file('laska.pkl')
+    cfg = load_config()
+    user = User(token=cfg.poster_token, account_number=cfg.poster_account)

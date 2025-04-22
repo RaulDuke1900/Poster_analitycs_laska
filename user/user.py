@@ -117,6 +117,7 @@ if __name__ == '__main__':
     env.read_env()
     laska = User(token=env('POSTER_TOKEN'), account_number='laska')
     laska.save_object_to_file(f'{laska.account_number}.pkl')
-    laska: User = User.load_from_file('laska.pkl')
+    cfg = load_config()
+    user = User(token=cfg.poster_token, account_number=cfg.poster_account)
     print(laska.tg_id, laska.account_number)
     # pprint(laska.get_cash_shift_transactions(laska.params, 2993))
